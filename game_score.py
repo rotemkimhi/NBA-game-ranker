@@ -1,7 +1,12 @@
-POINT_DIFF_WEIGHT = 0.35
-lead_changes_weight = 0.20
-comback_weight = 0.15
-OTHER_WEIGHT = 1.0 - POINT_DIFF_WEIGHT - lead_changes_weight  - comback_weight
+from weights_config import weight_profiles, default_profile
+
+# Choose a profile (or let user select via input/CLI/argparse)
+profile = weight_profiles[default_profile]
+
+POINT_DIFF_WEIGHT = profile["POINT_DIFF_WEIGHT"]
+lead_changes_weight = profile["lead_changes_weight"]
+comback_weight = profile["comeback_weight"]
+OTHER_WEIGHT = 1.0 - POINT_DIFF_WEIGHT - lead_changes_weight - comback_weight  
 
 def calculate_game_score(row):
     point_diff = abs(row['PTS_HOME'] - row['PTS_AWAY'])

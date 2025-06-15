@@ -8,7 +8,7 @@ from comeback import detect_comeback_quarter
 from game_score import calculate_game_score
 
 # CONFIGURABLE PARAMS
-target_date = "2025-06-05"  # Change to your desired date
+target_date = "2025-06-11"
 
 def fetch_games_on_date(date_str):
     all_data = []
