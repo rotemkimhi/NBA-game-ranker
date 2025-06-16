@@ -32,7 +32,7 @@ def count_clutch_moments(game_id):
                     pass
 
             # Only check for clutch moments in last 2 minutes
-            if row['SECONDS'] > 120:
+            if row['SECONDS'] > 180:
                 continue
 
             margin = abs(last_home_score - last_away_score)

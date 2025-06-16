@@ -6,7 +6,9 @@ profile = weight_profiles[default_profile]
 POINT_DIFF_WEIGHT = profile["POINT_DIFF_WEIGHT"]
 lead_changes_weight = profile["lead_changes_weight"]
 comback_weight = profile["comeback_weight"]
-OTHER_WEIGHT = 1.0 - POINT_DIFF_WEIGHT - lead_changes_weight - comback_weight  
+clutch_weight = profile["clutch_weight"]
+OTHER_WEIGHT = 1.0 - (POINT_DIFF_WEIGHT + lead_changes_weight + comback_weight + clutch_weight)
+ 
 
 def calculate_game_score(row):
     point_diff = abs(row['PTS_HOME'] - row['PTS_AWAY'])
@@ -19,6 +21,12 @@ def calculate_game_score(row):
     blk_part = min((row['BLK_HOME'] + row['BLK_AWAY']) / 13 * 100, 100)
     clutch_part = min(40 + row['CLUTCH_COUNT'] * 10, 100)
 
-    other_parts = [ast_part, stl_part, blk_part, clutch_part]
-    weighted_score = round(comback_weight * comeback_part + POINT_DIFF_WEIGHT * score_part + lc_ties_part * lead_changes_weight + (OTHER_WEIGHT / len(other_parts)) * sum(other_parts), 2)
-    return weighted_score
+    # Use weights from profile
+    weighted_score = (
+        POINT_DIFF_WEIGHT * score_part +
+        lead_changes_weight * lc_ties_part +
+        comback_weight * comeback_part +
+        clutch_weight * clutch_part +
+        (OTHER_WEIGHT / 3) * (ast_part + stl_part + blk_part)
+    )
+    return round(weighted_score, 2)
